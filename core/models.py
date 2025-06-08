@@ -1,9 +1,12 @@
 from django.contrib.auth.base_user import BaseUserManager, AbstractBaseUser
-from django.contrib.auth.models import AbstractUser, PermissionsMixin
+from django.contrib.auth.models import PermissionsMixin
 from django.db import models
-from shared.models import UUIDChronoModel
-from upload.models import ImageUpload
 from django.utils.translation import gettext_lazy as _
+from taggit.managers import TaggableManager
+from taggit.models import Tag
+from shared.models import UUIDChronoModel
+from tags.models import UUIDTaggedItem
+from upload.models import ImageUpload
 
 
 class UserManager(BaseUserManager):
@@ -39,6 +42,7 @@ class User(UUIDChronoModel, AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     avatar = models.ForeignKey(ImageUpload, on_delete=models.CASCADE, null=True, blank=True)
+    interests = TaggableManager(through=UUIDTaggedItem, blank=True)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['name']
@@ -66,6 +70,8 @@ class Group(UUIDChronoModel):
         choices=Visibility.choices,
         default=Visibility.PUBLIC,
     )
+
+    areas = TaggableManager(through=UUIDTaggedItem, blank=True)
 
     def is_member(self, user):
         return self.members.select_related('user').filter(user=user, is_pending_approval=False).exists()

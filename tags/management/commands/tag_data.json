@@ -1,0 +1,302 @@
+{
+    "tags": [
+        {
+            "name": "Matemática"
+        },
+        {
+            "name": "Física"
+        },
+        {
+            "name": "Programação"
+        },
+        {
+            "name": "Engenharia"
+        },
+        {
+            "name": "Algoritmos"
+        },
+        {
+            "name": "Lógica"
+        },
+        {
+            "name": "IA"
+        },
+        {
+            "name": "Química"
+        },
+        {
+            "name": "Biologia"
+        },
+        {
+            "name": "Medicina"
+        },
+        {
+            "name": "Psicologia"
+        },
+        {
+            "name": "Sociologia"
+        },
+        {
+            "name": "Economia"
+        },
+        {
+            "name": "Finanças"
+        },
+        {
+            "name": "Arquitetura"
+        },
+        {
+            "name": "Design"
+        },
+        {
+            "name": "Filosofia"
+        },
+        {
+            "name": "História"
+        },
+        {
+            "name": "Geografia"
+        },
+        {
+            "name": "Literatura"
+        },
+        {
+            "name": "Linguística"
+        },
+        {
+            "name": "Estatística"
+        },
+        {
+            "name": "Ciência de Dados"
+        },
+        {
+            "name": "Robótica"
+        },
+        {
+            "name": "Neurociência"
+        },
+        {
+            "name": "Ecologia"
+        },
+        {
+            "name": "Astronomia"
+        },
+        {
+            "name": "Geologia"
+        },
+        {
+            "name": "Ciência Política"
+        },
+        {
+            "name": "Direito"
+        },
+        {
+            "name": "Música"
+        },
+        {
+            "name": "Artes Visuais"
+        }
+    ],
+    "related_tags": [
+        {
+            "tag": "Programação",
+            "related": "Algoritmos"
+        },
+        {
+            "tag": "Matemática",
+            "related": "Física"
+        },
+        {
+            "tag": "Programação",
+            "related": "Lógica"
+        },
+        {
+            "tag": "Biologia",
+            "related": "Medicina"
+        },
+        {
+            "tag": "Química",
+            "related": "Biologia"
+        },
+        {
+            "tag": "Física",
+            "related": "Química"
+        },
+        {
+            "tag": "Psicologia",
+            "related": "Neurociência"
+        },
+        {
+            "tag": "Sociologia",
+            "related": "Psicologia"
+        },
+        {
+            "tag": "Economia",
+            "related": "Finanças"
+        },
+        {
+            "tag": "Estatística",
+            "related": "Ciência de Dados"
+        },
+        {
+            "tag": "IA",
+            "related": "Robótica"
+        },
+        {
+            "tag": "Engenharia",
+            "related": "Arquitetura"
+        },
+        {
+            "tag": "Design",
+            "related": "Artes Visuais"
+        },
+        {
+            "tag": "Filosofia",
+            "related": "Lógica"
+        },
+        {
+            "tag": "História",
+            "related": "Geografia"
+        },
+        {
+            "tag": "Linguística",
+            "related": "Literatura"
+        },
+        {
+            "tag": "Astronomia",
+            "related": "Física"
+        },
+        {
+            "tag": "Geologia",
+            "related": "Ecologia"
+        },
+        {
+            "tag": "Ciência Política",
+            "related": "Direito"
+        },
+        {
+            "tag": "Música",
+            "related": "Matemática"
+        },
+        {
+            "tag": "Programação",
+            "related": "Matemática"
+        },
+        {
+            "tag": "IA",
+            "related": "Programação"
+        },
+        {
+            "tag": "Lógica",
+            "related": "Matemática"
+        },
+        {
+            "tag": "Física",
+            "related": "Engenharia"
+        },
+        {
+            "tag": "Química",
+            "related": "Física"
+        },
+        {
+            "tag": "Biologia",
+            "related": "Química"
+        },
+        {
+            "tag": "Medicina",
+            "related": "Biologia"
+        },
+        {
+            "tag": "Psicologia",
+            "related": "Biologia"
+        },
+        {
+            "tag": "Neurociência",
+            "related": "Psicologia"
+        },
+        {
+            "tag": "Sociologia",
+            "related": "Psicologia"
+        },
+        {
+            "tag": "Economia",
+            "related": "Estatística"
+        },
+        {
+            "tag": "Finanças",
+            "related": "Economia"
+        },
+        {
+            "tag": "Ciência de Dados",
+            "related": "Estatística"
+        },
+        {
+            "tag": "Robótica",
+            "related": "Engenharia"
+        },
+        {
+            "tag": "Arquitetura",
+            "related": "Design"
+        },
+        {
+            "tag": "Filosofia",
+            "related": "Ciência Política"
+        },
+        {
+            "tag": "História",
+            "related": "Geografia"
+        },
+        {
+            "tag": "Linguística",
+            "related": "Psicologia"
+        },
+        {
+            "tag": "Astronomia",
+            "related": "Matemática"
+        },
+        {
+            "tag": "Geologia",
+            "related": "Física"
+        },
+        {
+            "tag": "Ecologia",
+            "related": "Biologia"
+        },
+        {
+            "tag": "Direito",
+            "related": "Filosofia"
+        },
+        {
+            "tag": "Música",
+            "related": "Física"
+        },
+        {
+            "tag": "Artes Visuais",
+            "related": "Design"
+        },
+        {
+            "tag": "IA",
+            "related": "Neurociência"
+        },
+        {
+            "tag": "Ciência de Dados",
+            "related": "IA"
+        },
+        {
+            "tag": "Programação",
+            "related": "Engenharia"
+        },
+        {
+            "tag": "Matemática",
+            "related": "Economia"
+        },
+        {
+            "tag": "Estatística",
+            "related": "Psicologia"
+        },
+        {
+            "tag": "Literatura",
+            "related": "História"
+        }
+    ]
+}

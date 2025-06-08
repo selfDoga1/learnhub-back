@@ -7,6 +7,7 @@ from shared.views import CookieTokenObtainPairView, LogoutView, CookieTokenRefre
 
 urlpatterns = [
     path('', include('core.urls')),
+    path('tags/', include('tags.urls')),
     path('upload/', include('upload.urls')),
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls')),

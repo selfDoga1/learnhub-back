@@ -1,13 +1,18 @@
 from rest_framework import serializers
+from taggit.serializers import TagListSerializerField
 
 from shared.serializers import DynamicModelSerializer
 from .models import User, Group, GroupMember, Activity
 
 
 class UserSerializer(DynamicModelSerializer):
+    interests = TagListSerializerField()
+
     class Meta:
         model = User
-        fields = ['id', 'email', 'name', 'avatar']
+        fields = ['id', 'email', 'name', 'avatar', 'interests']
+
+
 
 
 class GroupSerializer(DynamicModelSerializer):
@@ -17,6 +22,7 @@ class GroupSerializer(DynamicModelSerializer):
     is_admin = serializers.SerializerMethodField()
     is_owner = serializers.SerializerMethodField()
     is_pending_approval = serializers.SerializerMethodField()
+    areas = TagListSerializerField()
 
     def get_members(self, obj):
         user = self.context['user']
@@ -68,7 +74,8 @@ class GroupSerializer(DynamicModelSerializer):
         fields = (
             [
                 'id', 'name', 'description', 'cover', 'visibility', 'members',
-                'owner', 'is_owner', 'is_admin', 'is_member', 'is_pending_approval'
+                'owner', 'is_owner', 'is_admin', 'is_member', 'is_pending_approval',
+                'areas'
             ]
         )
 

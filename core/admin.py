@@ -1,6 +1,9 @@
 from django.contrib import admin
+from django import forms
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.utils.translation import gettext_lazy as _
+from taggit.forms import TagWidget
+
 from .models import User, Group, GroupMember, Activity
 
 
@@ -10,6 +13,7 @@ class ActivityInline(admin.TabularInline):  # or admin.StackedInline
     fields = ('name', 'datetime', 'modality')
     readonly_fields = ('name', 'datetime', 'modality')
     show_change_link = True  # Allows clicking through to edit activity
+
 
 @admin.register(User)
 class UserAdmin(BaseUserAdmin):
@@ -22,8 +26,9 @@ class UserAdmin(BaseUserAdmin):
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
         (_('Personal Info'), {'fields': ('name', 'avatar')}),
-        (_('Permissions'), {'fields': ('is_active', 'is_staff', 'groups', 'user_permissions')}),
-        (_('Important dates'), {'fields': ('last_login',)}),
+        (_('Interests'), {'fields': ('interests',)}),
+        # (_('Permissions'), {'fields': ('is_active', 'is_staff', 'groups', 'user_permissions')}),
+        # (_('Important dates'), {'fields': ('last_login',)}),
     )
 
     add_fieldsets = (
@@ -54,4 +59,3 @@ class ActivityAdmin(admin.ModelAdmin):
     list_filter = ('group', 'datetime')
     search_fields = ('name', 'description', 'group__name')
     ordering = ('-datetime',)
-
