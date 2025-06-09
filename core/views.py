@@ -2,11 +2,12 @@ import copy
 from collections import defaultdict
 from datetime import datetime
 from itertools import chain
+from re import search
 
 import pytz
 from django.db import transaction
 from django.utils.translation import gettext_lazy as _
-from rest_framework import viewsets, status
+from rest_framework import viewsets, status, filters
 from rest_framework.decorators import action
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated, AllowAny
@@ -54,25 +55,36 @@ class UserViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['get'])
     def groups(self, request):
         user = self.request.user
+        _search = request.query_params.get('search', None)
+
         memberships = (
             GroupMember.objects.filter(
-                user=user, is_pending_approval=False
+                user=user, is_pending_approval=False, group__name__icontains=_search
             )
             .prefetch_related('group')
             .order_by('-is_owner', '-is_admin')
         )
-        groups = [member.group for member in memberships]
-        serializer = GroupSerializer(groups, many=True, context={'user': user})
 
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        paginator = PageNumberPagination()
+        groups = [member.group for member in memberships]
+
+        paginated_groups = paginator.paginate_queryset(groups, request)
+        serializer = GroupSerializer(paginated_groups, many=True, context={'user': user})
+        return paginator.get_paginated_response(serializer.data)
+
 
     @action(detail=False, methods=['get'])
     def activities(self, request):
         user = self.request.user
+        paginator = PageNumberPagination()
         activities = _get_activities_by_user(user)
-        serializer = ActivitySerializer(activities, many=True, context={'user': user})
 
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        _search = request.query_params.get('search', None)
+        activities = activities.filter(name__icontains=_search)
+
+        paginated_activities = paginator.paginate_queryset(activities, request)
+        serializer = ActivitySerializer(paginated_activities, many=True, context={'user': user})
+        return paginator.get_paginated_response(serializer.data)
 
     @action(detail=False, methods=['get'])
     def activities_by_date(self, request):
@@ -99,6 +111,8 @@ class GroupViewSet(viewsets.ModelViewSet):
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
     permission_classes = [IsAuthenticated, IsGroupAdminOrMemberReadOnly]
+    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
+    search_fields = ['name']
 
     def get_serializer_context(self):
         context = super().get_serializer_context()
@@ -164,6 +178,16 @@ class GroupViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['get'])
     def home(self, request):
+
+        search = request.query_params.get('search', '')
+        paginator = PageNumberPagination()
+
+        if search:
+            groups = self.filter_queryset(self.get_queryset())
+            paginated_groups = paginator.paginate_queryset(groups, request)
+            serializer = self.get_serializer(paginated_groups, many=True)
+            return paginator.get_paginated_response(serializer.data)
+
         user = request.user
         user_tags = list(user.interests.all())
         user_tag_ids = set(tag.id for tag in user_tags)
@@ -190,7 +214,6 @@ class GroupViewSet(viewsets.ModelViewSet):
         unrelated_groups = self.get_queryset().exclude(id__in=[g.id for g in sorted_groups])
         final_groups = list(chain(sorted_groups, unrelated_groups))
 
-        paginator = PageNumberPagination()
         paginated_groups = paginator.paginate_queryset(final_groups, request)
         serializer = self.get_serializer(paginated_groups, many=True)
 
@@ -280,6 +303,8 @@ class GroupMemberViewSet(viewsets.ModelViewSet):
     queryset = GroupMember.objects.all()
     serializer_class = GroupMemberSerializer
     permission_classes = [IsAuthenticated, IsGroupAdminOrSelfManage]
+    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
+    search_fields = ['group__name']
 
     @action(detail=True, methods=['post'])
     def handle_privilege(self, request, pk=None):
