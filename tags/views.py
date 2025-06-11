@@ -23,3 +23,4 @@ class UUIDTagViewSet(viewsets.ModelViewSet):
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     search_fields = ['name', 'slug']
     ordering_fields = ['name']
+    pagination_class = None

@@ -15,6 +15,7 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet
 
 from tags.models import RelatedTag, TagCorrelation
+from tags.services import update_tag_correlations_from_tag_lists
 from upload.models import ImageUpload
 from .models import User, Group, GroupMember, Activity
 from .permissions import IsGroupAdminOrMemberReadOnly, IsGroupAdminOrSelfManage, IsSelfReadUpdateOnly
@@ -35,7 +36,7 @@ class UserViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated, IsSelfReadUpdateOnly]
 
     def partial_update(self, request, *args, **kwargs):
-        user = self.request.user
+        user = self.get_object()
         data = request.data.copy()
         avatar = data.pop('avatar', None)
         interests = data.pop('interests', None)
@@ -46,8 +47,16 @@ class UserViewSet(viewsets.ModelViewSet):
             image_upload.file = avatar[0]
             image_upload.save()
 
+        old_user_interests = list(user.interests.names())
+        new_user_interests = interests
+
+        print(old_user_interests, new_user_interests)
+
         if interests is not None:
             user.interests.set(interests)
+
+        if old_user_interests != new_user_interests:
+            update_tag_correlations_from_tag_lists(old_user_interests, new_user_interests)
 
         request._full_data = data
         return super().partial_update(request, *args, **kwargs)
@@ -71,7 +80,6 @@ class UserViewSet(viewsets.ModelViewSet):
         paginated_groups = paginator.paginate_queryset(groups, request)
         serializer = GroupSerializer(paginated_groups, many=True, context={'user': user})
         return paginator.get_paginated_response(serializer.data)
-
 
     @action(detail=False, methods=['get'])
     def activities(self, request):
@@ -179,10 +187,10 @@ class GroupViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['get'])
     def home(self, request):
 
-        search = request.query_params.get('search', '')
+        _search = request.query_params.get('search', '')
         paginator = PageNumberPagination()
 
-        if search:
+        if _search:
             groups = self.filter_queryset(self.get_queryset())
             paginated_groups = paginator.paginate_queryset(groups, request)
             serializer = self.get_serializer(paginated_groups, many=True)
