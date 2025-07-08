@@ -35,7 +35,7 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
     permission_classes = [IsAuthenticated, IsSelfReadUpdateOnly]
 
-    def partial_update(self, request, *args, **kwargs):
+    def _process_user(self, request, *args, **kwargs):
         user = self.get_object()
         data = request.data.copy()
         avatar = data.pop('avatar', None)
@@ -50,16 +50,19 @@ class UserViewSet(viewsets.ModelViewSet):
         old_user_interests = list(user.interests.names())
         new_user_interests = interests
 
-        print(old_user_interests, new_user_interests)
-
         if interests is not None:
             user.interests.set(interests)
 
         if old_user_interests != new_user_interests:
             update_tag_correlations_from_tag_lists(old_user_interests, new_user_interests)
 
+        return data
+
+    def partial_update(self, request, *args, **kwargs):
+        data = self._process_user(request, *args, **kwargs)
         request._full_data = data
         return super().partial_update(request, *args, **kwargs)
+
 
     @action(detail=False, methods=['get'])
     def groups(self, request):
