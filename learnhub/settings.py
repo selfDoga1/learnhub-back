@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/5.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
-
+from datetime import timedelta
 from pathlib import Path
 from decouple import config
 
@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'core',
     'upload',
     'tags',
+    'react'
 ]
 
 MIDDLEWARE = [
@@ -156,8 +157,9 @@ CORS_ALLOW_ALL_ORIGINS = True
 # CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOWED_ORIGINS = [
-    "http://192.168.137.64:5173",
-    "http://172.24.240.168:5173"
+    # "http://192.168.137.64:5173",
+    # "http://172.24.240.168:5173",
+    "*"
 ]
 
 # CORS_EXPOSE_HEADERS = ["Set-Cookie"]
@@ -171,5 +173,11 @@ CORS_ALLOWED_ORIGINS = [
 # CSRF_COOKIE_SECURE = True
 # SESSION_COOKIE_SECURE = True
 
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=120),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+}
 
-ALLOWED_HOSTS = ['192.168.137.64', '172.24.240.168', 'localhost']
+# ALLOWED_HOSTS = ['192.168.137.64', '172.24.240.168', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['*']
+REACT_APP_BUILD_PATH = "react/dist"

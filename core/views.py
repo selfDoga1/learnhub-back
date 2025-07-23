@@ -7,6 +7,7 @@ from re import search
 import pytz
 from django.db import transaction
 from django.utils.translation import gettext_lazy as _
+from django.views.generic import TemplateView
 from rest_framework import viewsets, status, filters
 from rest_framework.decorators import action
 from rest_framework.pagination import PageNumberPagination
@@ -419,3 +420,6 @@ class PublicViewSet(ViewSet):
             user.save()
 
         return Response(status=status.HTTP_201_CREATED)
+
+# class ReactView(TemplateView):
+#     template_name =
